@@ -1,18 +1,19 @@
-// import { Center, Text } from '@chakra-ui/react';
-
-// import Layout from '@/layout/layout';
-
-// import { useEffect, useState } from 'react';
 import { Center, Text, Checkbox, CheckboxGroup, VStack } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useEffect, useState } from 'react';
-import { Prefecture, PopulationData, PopulationDatum, getPopulationData, getPrefectures } from '@/functions/getPeopleData';
+import {
+  Prefecture,
+  PopulationData,
+  PopulationDatum,
+  getPopulationData,
+  getPrefectures,
+} from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
-  const [populationData, setPopulationData] = useState<PopulationDatum[]>(null);
+  const [populationData, setPopulationData] = useState<PopulationDatum[] | null>(null);
 
   useEffect(() => {
     const fetchPrefectures = async () => {
@@ -35,18 +36,21 @@ const IndexPage = (): JSX.Element => {
 
     fetchPopulationData();
   }, [selectedPrefectures]);
-
   return (
     <Layout>
-      <Center w="full" h="full" color="black.text.dark" fontWeight="bold">
-        <Text fontSize="xl">開発頑張ろう！！アイウエオ</Text>
-      </Center>
       <VStack spacing={4} align="start">
         {prefectures.map((pref) => (
           <Checkbox
             key={pref.prefCode}
             value={pref.prefCode}
-            onChange={(e) => setSelectedPrefectures([...selectedPrefectures, e.target.value])}
+            isChecked={selectedPrefectures.includes(pref.prefCode)}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setSelectedPrefectures([...selectedPrefectures, pref.prefCode]);
+              } else {
+                setSelectedPrefectures(selectedPrefectures.filter((code) => code !== pref.prefCode));
+              }
+            }}
           >
             {pref.prefName}
           </Checkbox>
