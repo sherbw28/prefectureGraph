@@ -1,19 +1,20 @@
-import { Center, Text, Checkbox, CheckboxGroup, VStack } from '@chakra-ui/react';
+import { Center, Checkbox, Grid, VStack } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useEffect, useState } from 'react';
 import {
   Prefecture,
-  PopulationData,
-  PopulationDatum,
+  SelectedPrefectureData,
+  PrefectureData,
   getPopulationData,
   getPrefectures,
+  PopulationDatum,
+  makeRandomColor
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
-  const [selectedPrefectures, setSelectedPrefectures] = useState<number[]>([]);
-  const [populationData, setPopulationData] = useState<PopulationDatum[] | null>(null);
+  const [selectedPrefecturesData, setSelectedPrefecturesData] = useState<SelectedPrefectureData>({});
 
   useEffect(() => {
     const fetchPrefectures = async () => {
@@ -25,46 +26,74 @@ const IndexPage = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    const fetchPopulationData = async () => {
-      if (selectedPrefectures.length > 0) {
-        const data = await getPopulationData(selectedPrefectures[0]);
-        setPopulationData(data.data[0].data);
-      } else {
-        setPopulationData(null);
-      }
+    const fetchPopulationData = async (prefCode: number, prefName: string) => {
+      const data = await getPopulationData(prefCode);
+
+      setSelectedPrefecturesData((prevData) => ({
+        ...prevData,
+        [prefCode]: { name: prefName, data: data.data[0].data },
+      }));
     };
 
-    fetchPopulationData();
-  }, [selectedPrefectures]);
+    for (let prefCode in selectedPrefecturesData) {
+      if (selectedPrefecturesData[prefCode].data === null) {
+        fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
+      }
+    }
+  }, [selectedPrefecturesData]);
+
+  const handleCheckboxChange = (e, prefCode: number, prefName: string) => {
+    if (e.target.checked) {
+      setSelectedPrefecturesData((prevData) => ({
+        ...prevData,
+        [prefCode]: { name: prefName, data: null },
+      }));
+    } else {
+      setSelectedPrefecturesData((prevData) => {
+        const newData = { ...prevData };
+        delete newData[prefCode];
+        return newData;
+      });
+    }
+  };
+
+  const generateChartData = () => {
+    let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
+
+    Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
+      data?.forEach(({ year, value }) => {
+        if (!mergedData[year]) {
+          mergedData[year] = { year: year, value: 0 };
+        }
+        mergedData[year][name] = value;
+      });
+    });
+
+    return Object.values(mergedData);
+  };
+
   return (
     <Layout>
-      <VStack spacing={4} align="start">
+      <Grid templateColumns="repeat(5, 1fr)" gap={6}>
         {prefectures.map((pref) => (
           <Checkbox
             key={pref.prefCode}
-            value={pref.prefCode}
-            isChecked={selectedPrefectures.includes(pref.prefCode)}
-            onChange={(e) => {
-              if (e.target.checked) {
-                setSelectedPrefectures([...selectedPrefectures, pref.prefCode]);
-              } else {
-                setSelectedPrefectures(selectedPrefectures.filter((code) => code !== pref.prefCode));
-              }
-            }}
+            isChecked={!!selectedPrefecturesData[pref.prefCode]}
+            onChange={(e) => handleCheckboxChange(e, pref.prefCode, pref.prefName)}
           >
             {pref.prefName}
           </Checkbox>
         ))}
-      </VStack>
-      {populationData && (
-        <LineChart width={500} height={300} data={populationData}>
-          <Line type="monotone" dataKey="value" stroke="#8884d8" />
-          <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="year" />
-          <YAxis />
-          <Tooltip />
-        </LineChart>
-      )}
+      </Grid>
+      <LineChart width={500} height={300} data={generateChartData()}>
+        {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
+          data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
+        )}
+        <CartesianGrid stroke="#ccc" />
+        <XAxis dataKey="year" />
+        <YAxis />
+        <Tooltip />
+      </LineChart>
     </Layout>
   );
 };
