@@ -42,7 +42,7 @@ const IndexPage = (): JSX.Element => {
     }
   }, [selectedPrefecturesData]);
 
-  const handleCheckboxChange = (e, prefCode: number, prefName: string) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, prefCode: number, prefName: string) => {
     if (e.target.checked) {
       setSelectedPrefecturesData((prevData) => ({
         ...prevData,
