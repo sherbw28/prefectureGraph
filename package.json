@@ -4,22 +4,44 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "firebase": "cd functions && npm run build && cd .. && firebase emulators:start --import=data/v0 --export-on-exit",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --dir src",
+    "lint:fix": "next lint --dir src --fix",
+    "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json}'",
+    "export": "next export"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.7.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
+    "framer-motion": "^10.12.17",
     "next": "13.4.7",
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recharts": "^2.7.2",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.6"
+  },
+  "volta": {
+    "node": "18.16.1",
+    "npm": "8.19.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.8.8"
   }
 }
