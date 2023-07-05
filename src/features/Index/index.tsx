@@ -54,6 +54,8 @@ const IndexPage = (): JSX.Element => {
 
   //クラーケンブランチ作成コメント
 
+  //クラーケンコメント2
+
   //チャートを表示する
   const generateChartData = () => {
     let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
