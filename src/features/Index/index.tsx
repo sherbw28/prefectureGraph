@@ -91,7 +91,12 @@ const IndexPage = (): JSX.Element => {
             </Checkbox>
           ))}
         </Grid>
-        <LineChart width={800} height={400} data={generateChartData()}>
+        <LineChart
+          width={800}
+          height={400}
+          data={generateChartData()}
+          margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
+        >
           {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
             data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
           )}
