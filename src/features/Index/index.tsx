@@ -21,10 +21,11 @@ const IndexPage = (): JSX.Element => {
       const data = await getPrefectures();
       setPrefectures(data);
     };
-
+    
     fetchPrefectures();
   }, []);
-
+  
+  //選択された都道府県の人口データを取得
   useEffect(() => {
     const fetchPopulationData = async (prefCode: number, prefName: string) => {
       const data = await getPopulationData(prefCode);
@@ -42,6 +43,7 @@ const IndexPage = (): JSX.Element => {
     }
   }, [selectedPrefecturesData]);
 
+  //チェックボックスの選択の確認
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, prefCode: number, prefName: string) => {
     if (e.target.checked) {
       setSelectedPrefecturesData((prevData) => ({
@@ -57,6 +59,7 @@ const IndexPage = (): JSX.Element => {
     }
   };
 
+  //チャートを表示する
   const generateChartData = () => {
     let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
 
@@ -69,12 +72,14 @@ const IndexPage = (): JSX.Element => {
       });
     });
 
+    // console.log(Object.values(mergedData));
+
     return Object.values(mergedData);
   };
 
   return (
     <Layout>
-      <Grid templateColumns="repeat(5, 1fr)" gap={6}>
+      <Grid templateColumns="repeat(7, 1fr)" gap={5}>
         {prefectures.map((pref) => (
           <Checkbox
             key={pref.prefCode}
@@ -85,7 +90,7 @@ const IndexPage = (): JSX.Element => {
           </Checkbox>
         ))}
       </Grid>
-      <LineChart width={500} height={300} data={generateChartData()}>
+      <LineChart width={800} height={400} data={generateChartData()}>
         {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
           data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
         )}

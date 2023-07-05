@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react';
+import { VStack, Heading } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
 type Props = {
@@ -10,6 +10,7 @@ const Layout = (props: Props) => {
 
   return (
     <VStack w="100vw" h="100vh" bg="bg.body" spacing="0px">
+      <Heading m={5}>都道府県グラフ</Heading>
       {children}
     </VStack>
   );
