@@ -30,10 +30,10 @@ export const getPrefectures = async () => {
   return response.data.result;
 };
 
-export const makeRandomColor = ():string => {
-    const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    return randomColor
-}
+export const makeRandomColor = (): string => {
+  const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+  return randomColor;
+};
 
 export interface Prefecture {
   prefCode: number;

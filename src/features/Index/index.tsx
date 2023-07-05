@@ -8,7 +8,7 @@ import {
   getPopulationData,
   getPrefectures,
   PopulationDatum,
-  makeRandomColor
+  makeRandomColor,
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
@@ -21,10 +21,10 @@ const IndexPage = (): JSX.Element => {
       const data = await getPrefectures();
       setPrefectures(data);
     };
-    
+
     fetchPrefectures();
   }, []);
-  
+
   //選択された都道府県の人口データを取得
   useEffect(() => {
     const fetchPopulationData = async (prefCode: number, prefName: string) => {
@@ -80,27 +80,26 @@ const IndexPage = (): JSX.Element => {
   return (
     <Layout>
       <Stack spacing="32px">
-
-      <Grid templateColumns="repeat(7, 1fr)" gap={5}>
-        {prefectures.map((pref) => (
-          <Checkbox
-            key={pref.prefCode}
-            isChecked={!!selectedPrefecturesData[pref.prefCode]}
-            onChange={(e) => handleCheckboxChange(e, pref.prefCode, pref.prefName)}
-          >
-            {pref.prefName}
-          </Checkbox>
-        ))}
-      </Grid>
-      <LineChart width={800} height={400} data={generateChartData()}>
-        {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
-          data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
-        )}
-        <CartesianGrid stroke="#ccc" />
-        <XAxis dataKey="year" />
-        <YAxis />
-        <Tooltip />
-      </LineChart>
+        <Grid templateColumns="repeat(7, 1fr)" gap={5}>
+          {prefectures.map((pref) => (
+            <Checkbox
+              key={pref.prefCode}
+              isChecked={!!selectedPrefecturesData[pref.prefCode]}
+              onChange={(e) => handleCheckboxChange(e, pref.prefCode, pref.prefName)}
+            >
+              {pref.prefName}
+            </Checkbox>
+          ))}
+        </Grid>
+        <LineChart width={800} height={400} data={generateChartData()}>
+          {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
+            data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
+          )}
+          <CartesianGrid stroke="#ccc" />
+          <XAxis dataKey="year" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
       </Stack>
     </Layout>
   );
