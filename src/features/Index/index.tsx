@@ -1,4 +1,4 @@
-import { Center, Checkbox, Grid, VStack } from '@chakra-ui/react';
+import { Center, Checkbox, Grid, Stack, VStack } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useEffect, useState } from 'react';
 import {
@@ -79,6 +79,8 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
+      <Stack spacing="32px">
+
       <Grid templateColumns="repeat(7, 1fr)" gap={5}>
         {prefectures.map((pref) => (
           <Checkbox
@@ -99,6 +101,7 @@ const IndexPage = (): JSX.Element => {
         <YAxis />
         <Tooltip />
       </LineChart>
+      </Stack>
     </Layout>
   );
 };
