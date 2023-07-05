@@ -1,15 +1,8 @@
-import { Center, Checkbox, Grid, VStack } from '@chakra-ui/react';
+import { Center, Checkbox, Grid, VStack, Select } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useEffect, useState } from 'react';
-import {
-  Prefecture,
-  SelectedPrefectureData,
-  PrefectureData,
-  getPopulationData,
-  getPrefectures,
-  PopulationDatum,
-  makeRandomColor
-} from '@/functions/getPeopleData';
+import { getPopulationData, getPrefectures, makeRandomColor } from '@/functions/getPeopleData';
+import { Prefecture, SelectedPrefectureData, PrefectureData, PopulationDatum } from '@/types/prefectureTypes';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
@@ -21,10 +14,10 @@ const IndexPage = (): JSX.Element => {
       const data = await getPrefectures();
       setPrefectures(data);
     };
-    
+
     fetchPrefectures();
   }, []);
-  
+
   //選択された都道府県の人口データを取得
   useEffect(() => {
     const fetchPopulationData = async (prefCode: number, prefName: string) => {
@@ -59,6 +52,8 @@ const IndexPage = (): JSX.Element => {
     }
   };
 
+  //クラーケンブランチ作成コメント
+
   //チャートを表示する
   const generateChartData = () => {
     let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
@@ -79,6 +74,7 @@ const IndexPage = (): JSX.Element => {
 
   return (
     <Layout>
+      {/* <Select></Select> */}
       <Grid templateColumns="repeat(7, 1fr)" gap={5}>
         {prefectures.map((pref) => (
           <Checkbox
