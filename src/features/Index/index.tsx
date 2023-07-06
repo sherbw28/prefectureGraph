@@ -8,7 +8,6 @@ import {
   getPopulationData,
   getPrefectures,
   PopulationDatum,
-  makeRandomColor,
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
@@ -16,8 +15,6 @@ const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefecturesData, setSelectedPrefecturesData] = useState<SelectedPrefectureData>({});
 
-  // const colors = ['#FF0000', '#0000FF', '#008000', '#FFFF00', '#800080', '#000000', '#FFA500'];
-  // const colors = ['red', 'blue', 'green'];
   const colors = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
 
   useEffect(() => {
