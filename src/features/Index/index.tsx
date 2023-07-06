@@ -15,7 +15,7 @@ const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefecturesData, setSelectedPrefecturesData] = useState<SelectedPrefectureData>({});
 
-  const colors = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
+  const COLOR_LIST = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
 
   useEffect(() => {
     const fetchPrefectures = async () => {
@@ -97,7 +97,7 @@ const IndexPage = (): JSX.Element => {
           margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
         >
           {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }], index) =>
-            data ? <Line type="monotone" dataKey={name} stroke={colors[index % colors.length]} key={prefCode} /> : null,
+            data ? <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} /> : null,
           )}
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey="year">
