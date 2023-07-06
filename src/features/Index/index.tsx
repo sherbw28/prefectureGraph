@@ -1,5 +1,5 @@
 import { Center, Checkbox, Grid, Stack, VStack } from '@chakra-ui/react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label } from 'recharts';
 import { useEffect, useState } from 'react';
 import {
   Prefecture,
@@ -91,13 +91,22 @@ const IndexPage = (): JSX.Element => {
             </Checkbox>
           ))}
         </Grid>
-        <LineChart width={800} height={400} data={generateChartData()}>
+        <LineChart
+          width={800}
+          height={400}
+          data={generateChartData()}
+          margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
+        >
           {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }]) =>
             data ? <Line type="monotone" dataKey={name} stroke={makeRandomColor()} key={prefCode} /> : null,
           )}
           <CartesianGrid stroke="#ccc" />
-          <XAxis dataKey="year" />
-          <YAxis />
+          <XAxis dataKey="year">
+            <Label value="年" offset={-20} position="insideBottom" />
+          </XAxis>
+          <YAxis>
+            <Label value="人口" angle={-90} position="insideLeft" offset={-50} />
+          </YAxis>
           <Tooltip />
         </LineChart>
       </Stack>
