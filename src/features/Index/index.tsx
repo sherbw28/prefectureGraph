@@ -1,5 +1,5 @@
 import { Center, Checkbox, Grid, Stack, VStack } from '@chakra-ui/react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 import {
   Prefecture,
@@ -108,6 +108,7 @@ const IndexPage = (): JSX.Element => {
             <Label value="人口" angle={-90} position="insideLeft" offset={-50} />
           </YAxis>
           <Tooltip />
+          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
         </LineChart>
       </Stack>
     </Layout>
