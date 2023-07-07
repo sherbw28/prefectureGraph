@@ -6,7 +6,7 @@ import {
   SelectedPrefectureData,
   getPopulationData,
   getPrefectures,
-  PopulationDatum,
+  YearlyPopulationData
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
@@ -62,7 +62,7 @@ const IndexPage = (): JSX.Element => {
 
   //チャートを表示する
   const generateChartData = () => {
-    let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
+    let mergedData: { [year: string]: YearlyPopulationData } = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
       // 選択されたカテゴリの切り替え

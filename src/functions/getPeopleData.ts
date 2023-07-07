@@ -14,7 +14,7 @@ export const getPopulationData = async (prefCode: number) => {
       },
     },
   );
-
+  
   return response.data.result;
 };
 
@@ -33,10 +33,11 @@ export interface Prefecture {
   prefName: string;
 }
 
-export interface PopulationDatum {
-  year: number;
-  value: number;
+interface PopulationDatum {
+  label: string;
+  data: Array<{year: number, value: number}>;
 }
+
 
 export interface PopulationData {
   boundaryYear: number;
@@ -51,3 +52,7 @@ export interface PrefectureData {
 export interface SelectedPrefectureData {
   [prefCode: string]: PrefectureData;
 }
+
+export type YearlyPopulationData = {
+  [prefName: string]: number;
+};
