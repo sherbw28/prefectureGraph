@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import {
   Prefecture,
   SelectedPrefectureData,
-  PrefectureData,
   getPopulationData,
   getPrefectures,
   PopulationDatum,
@@ -34,7 +33,7 @@ const IndexPage = (): JSX.Element => {
 
       setSelectedPrefecturesData((prevData) => ({
         ...prevData,
-        [prefCode]: { name: prefName, data: data.data[selectedPopulationCategory].data },
+        [prefCode]: { name: prefName, data: data.data },
       }));
     };
 
@@ -66,7 +65,11 @@ const IndexPage = (): JSX.Element => {
     let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
-      data?.forEach(({ year, value }) => {
+      // 選択されたカテゴリの切り替え
+      const selectedData = data?.[selectedPopulationCategory]?.data;
+
+
+      selectedData?.forEach(({ year, value }) => {
         if (!mergedData[year]) {
           mergedData[year] = { year: year, value: 0 };
         }
@@ -107,7 +110,9 @@ const IndexPage = (): JSX.Element => {
           margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
         >
           {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }], index) =>
-            data ? <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} /> : null,
+            data ? (
+              <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} />
+            ) : null,
           )}
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey="year">
