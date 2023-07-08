@@ -1,19 +1,19 @@
-import { Center, Checkbox, Grid, Stack, VStack } from '@chakra-ui/react';
+import { Center, Checkbox, Grid, Stack, VStack, Select } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 import {
   Prefecture,
   SelectedPrefectureData,
-  PrefectureData,
   getPopulationData,
   getPrefectures,
-  PopulationDatum,
+  YearlyPopulationData
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefecturesData, setSelectedPrefecturesData] = useState<SelectedPrefectureData>({});
+  const [selectedPopulationCategory, setSelectedPopulationCategory] = useState(0);
 
   const COLOR_LIST = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
 
@@ -33,7 +33,7 @@ const IndexPage = (): JSX.Element => {
 
       setSelectedPrefecturesData((prevData) => ({
         ...prevData,
-        [prefCode]: { name: prefName, data: data.data[0].data },
+        [prefCode]: { name: prefName, data: data.data },
       }));
     };
 
@@ -42,7 +42,7 @@ const IndexPage = (): JSX.Element => {
         fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
       }
     }
-  }, [selectedPrefecturesData]);
+  }, [selectedPrefecturesData, selectedPopulationCategory]);
 
   //チェックボックスの選択の確認
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, prefCode: number, prefName: string) => {
@@ -62,10 +62,14 @@ const IndexPage = (): JSX.Element => {
 
   //チャートを表示する
   const generateChartData = () => {
-    let mergedData: { [year: string]: PopulationDatum & { [prefName: string]: number } } = {};
+    let mergedData: { [year: string]: YearlyPopulationData } = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
-      data?.forEach(({ year, value }) => {
+      // 選択されたカテゴリの切り替え
+      const selectedData = data?.[selectedPopulationCategory]?.data;
+
+
+      selectedData?.forEach(({ year, value }) => {
         if (!mergedData[year]) {
           mergedData[year] = { year: year, value: 0 };
         }
@@ -79,6 +83,15 @@ const IndexPage = (): JSX.Element => {
   return (
     <Layout>
       <Stack spacing="32px">
+        <Select
+          value={selectedPopulationCategory}
+          onChange={(e) => setSelectedPopulationCategory(Number(e.target.value))}
+        >
+          <option value={0}>総人口</option>
+          <option value={1}>年少人口</option>
+          <option value={2}>生産年齢人口</option>
+          <option value={3}>老年人口</option>
+        </Select>
         <Grid templateColumns="repeat(7, 1fr)" gap={5}>
           {prefectures.map((pref) => (
             <Checkbox
@@ -97,7 +110,9 @@ const IndexPage = (): JSX.Element => {
           margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
         >
           {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }], index) =>
-            data ? <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} /> : null,
+            data ? (
+              <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} />
+            ) : null,
           )}
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey="year">
