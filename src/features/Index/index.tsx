@@ -6,7 +6,7 @@ import {
   SelectedPrefectureData,
   getPopulationData,
   getPrefectures,
-  YearlyPopulationData
+  YearlyPopulationData,
 } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
@@ -68,7 +68,6 @@ const IndexPage = (): JSX.Element => {
       // 選択されたカテゴリの切り替え
       const selectedData = data?.[selectedPopulationCategory]?.data;
 
-
       selectedData?.forEach(({ year, value }) => {
         if (!mergedData[year]) {
           mergedData[year] = { year: year, value: 0 };
@@ -109,11 +108,9 @@ const IndexPage = (): JSX.Element => {
           data={generateChartData()}
           margin={{ top: 10, right: 10, left: 80, bottom: 80 }}
         >
-          {Object.entries(selectedPrefecturesData).map(([prefCode, { name, data }], index) =>
-            data ? (
-              <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} />
-            ) : null,
-          )}
+          {Object.entries(selectedPrefecturesData).map(([prefCode, { name }], index) => (
+            <Line type="monotone" dataKey={name} stroke={COLOR_LIST[index % COLOR_LIST.length]} key={prefCode} />
+          ))}
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey="year">
             <Label value="年" offset={-20} position="insideBottom" />
