@@ -11,7 +11,7 @@
     "lint:fix": "next lint --dir src --fix",
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json}'",
     "export": "next export",
-    "cypress:open": "cypress open"
+    "cypress:test": "npx cypress run"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.7.1",

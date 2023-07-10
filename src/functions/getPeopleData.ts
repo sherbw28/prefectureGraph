@@ -35,7 +35,7 @@ export interface Prefecture {
 
 interface PopulationDatum {
   label: string;
-  data: Array<{ year: number; value: number }>;
+  data: { year: number, value: number }[]
 }
 
 export interface PopulationData {
