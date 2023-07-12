@@ -10,7 +10,8 @@
     "lint": "next lint --dir src",
     "lint:fix": "next lint --dir src --fix",
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json}'",
-    "export": "next export"
+    "export": "next export",
+    "cypress:test": "npx cypress run"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.7.1",
@@ -21,6 +22,7 @@
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
+    "cypress": "^12.17.0",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
     "framer-motion": "^10.12.17",
