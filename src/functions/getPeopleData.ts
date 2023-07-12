@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_KEY = process.env.NEXT_PUBLIC_RESAS_API_KEY;
 
-export const getPopulationData = async (prefCode: number) => {
+export const getPopulationData = async (prefCode: number): Promise<PopulationData> => {
   const response = await axios.get(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-`,
     {
@@ -15,17 +15,17 @@ export const getPopulationData = async (prefCode: number) => {
     },
   );
 
-  return response.data.result;
+  return (response.data as { result: PopulationData }).result;
 };
 
-export const getPrefectures = async () => {
+export const getPrefectures = async (): Promise<Prefecture[]> => {
   const response = await axios.get(`https://opendata.resas-portal.go.jp/api/v1/prefectures`, {
     headers: {
       'X-API-KEY': API_KEY,
     },
   });
 
-  return response.data.result;
+  return (response.data as { result: Prefecture[] }).result;
 };
 
 export interface Prefecture {
