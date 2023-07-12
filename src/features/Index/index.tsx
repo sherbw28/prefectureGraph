@@ -1,6 +1,7 @@
-import { Center, Checkbox, Grid, Stack, VStack, Select } from '@chakra-ui/react';
+import { Checkbox, Grid, Stack, Select } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
+
 import {
   Prefecture,
   SelectedPrefectureData,
@@ -23,7 +24,7 @@ const IndexPage = (): JSX.Element => {
       setPrefectures(data);
     };
 
-    fetchPrefectures();
+    void fetchPrefectures();
   }, []);
 
   //選択された都道府県の人口データを取得
@@ -37,9 +38,9 @@ const IndexPage = (): JSX.Element => {
       }));
     };
 
-    for (let prefCode in selectedPrefecturesData) {
+    for (const prefCode in selectedPrefecturesData) {
       if (selectedPrefecturesData[prefCode].data === null) {
-        fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
+        void fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
       }
     }
   }, [selectedPrefecturesData, selectedPopulationCategory]);
@@ -62,7 +63,7 @@ const IndexPage = (): JSX.Element => {
 
   //チャートを表示する
   const generateChartData = () => {
-    let mergedData: { [year: string]: YearlyPopulationData } = {};
+    const mergedData: { [year: string]: YearlyPopulationData } = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
       // 選択されたカテゴリの切り替え
