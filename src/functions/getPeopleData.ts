@@ -33,9 +33,14 @@ export interface Prefecture {
   prefName: string;
 }
 
+interface PopulationValueByYear {
+  year: number;
+  value: number;
+}
+
 interface PopulationDatum {
   label: string;
-  data: { year: number, value: number }[]
+  data: PopulationValueByYear[];
 }
 
 export interface PopulationData {
