@@ -1,9 +1,10 @@
-import { Checkbox, Grid, Stack, Select } from '@chakra-ui/react';
+import { Stack, Select } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 
 import { Prefecture, SelectedPrefectureData, YearlyPopulationData } from '@/types/index';
 import { getPopulationData, getPrefectures } from '@/functions/getPeopleData';
+import { CheckboxList } from '@/components';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
@@ -87,17 +88,11 @@ const IndexPage = (): JSX.Element => {
           <option value={2}>生産年齢人口</option>
           <option value={3}>老年人口</option>
         </Select>
-        <Grid templateColumns="repeat(7, 1fr)" gap={5}>
-          {prefectures.map((pref) => (
-            <Checkbox
-              key={pref.prefCode}
-              isChecked={!!selectedPrefecturesData[pref.prefCode]}
-              onChange={(e) => handleCheckboxChange(e, pref.prefCode, pref.prefName)}
-            >
-              {pref.prefName}
-            </Checkbox>
-          ))}
-        </Grid>
+        <CheckboxList
+          prefectures={prefectures}
+          selectedPrefecturesData={selectedPrefecturesData}
+          handleCheckboxChange={handleCheckboxChange}
+        />
         <LineChart
           width={800}
           height={400}
