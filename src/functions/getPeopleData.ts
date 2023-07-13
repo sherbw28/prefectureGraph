@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { Prefecture, PopulationData } from '@/types/index';
+
 const API_KEY = process.env.NEXT_PUBLIC_RESAS_API_KEY;
 
 export const getPopulationData = async (prefCode: number): Promise<PopulationData> => {
@@ -26,37 +28,4 @@ export const getPrefectures = async (): Promise<Prefecture[]> => {
   });
 
   return (response.data as { result: Prefecture[] }).result;
-};
-
-export interface Prefecture {
-  prefCode: number;
-  prefName: string;
-}
-
-interface PopulationValueByYear {
-  year: number;
-  value: number;
-}
-
-interface PopulationDatum {
-  label: string;
-  data: PopulationValueByYear[];
-}
-
-export interface PopulationData {
-  boundaryYear: number;
-  data: PopulationDatum[];
-}
-
-export interface PrefectureData {
-  name: string;
-  data: PopulationDatum[];
-}
-
-export interface SelectedPrefectureData {
-  [prefCode: string]: PrefectureData;
-}
-
-export type YearlyPopulationData = {
-  [prefName: string]: number;
 };

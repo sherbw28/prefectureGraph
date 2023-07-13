@@ -1,7 +1,7 @@
 // /utils/api/index.ts
 import axios from 'axios';
 
-import { Prefecture, PopulationData } from '../../functions/getPeopleData';
+import { Prefecture, PopulationData } from '../../types/index';
 
 // RESAS API key
 const API_KEY = process.env.NEXT_PUBLIC_RESAS_API_KEY;

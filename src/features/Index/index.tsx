@@ -2,13 +2,8 @@ import { Checkbox, Grid, Stack, Select } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 
-import {
-  Prefecture,
-  SelectedPrefectureData,
-  getPopulationData,
-  getPrefectures,
-  YearlyPopulationData,
-} from '@/functions/getPeopleData';
+import { Prefecture, SelectedPrefectureData, YearlyPopulationData } from '@/types/index';
+import { getPopulationData, getPrefectures } from '@/functions/getPeopleData';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
