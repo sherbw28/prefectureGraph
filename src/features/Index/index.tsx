@@ -1,10 +1,10 @@
-import { Stack, Select } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } from 'recharts';
 import { useEffect, useState } from 'react';
 
 import { Prefecture, SelectedPrefectureData, YearlyPopulationData } from '@/types/index';
 import { getPopulationData, getPrefectures } from '@/functions/getPeopleData';
-import { CheckboxList } from '@/components';
+import { CheckboxList, PopulationCategorySelect } from '@/components';
 import Layout from '@/layout/layout';
 
 const IndexPage = (): JSX.Element => {
@@ -79,15 +79,10 @@ const IndexPage = (): JSX.Element => {
   return (
     <Layout>
       <Stack spacing="32px">
-        <Select
-          value={selectedPopulationCategory}
-          onChange={(e) => setSelectedPopulationCategory(Number(e.target.value))}
-        >
-          <option value={0}>総人口</option>
-          <option value={1}>年少人口</option>
-          <option value={2}>生産年齢人口</option>
-          <option value={3}>老年人口</option>
-        </Select>
+        <PopulationCategorySelect
+          selectedPopulationCategory={selectedPopulationCategory}
+          setSelectedPopulationCategory={setSelectedPopulationCategory}
+        />
         <CheckboxList
           prefectures={prefectures}
           selectedPrefecturesData={selectedPrefecturesData}
