@@ -65,10 +65,6 @@ const IndexPage = (): JSX.Element => {
       }));
     } else {
       setSelectedPrefecturesData((prevData) => {
-        /* [Knowledge] 一応imutableにこう書ける
-          const {prefCode, ...remains} = prevData
-          return remains
-        */
         const newData = { ...prevData };
         delete newData[prefCode];
         return newData;
