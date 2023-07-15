@@ -47,8 +47,6 @@ const IndexPage = (): JSX.Element => {
 
     // このprefCodeは一回の処理内では変化しないからconst定義でいい気がする
     for (let prefCode in selectedPrefecturesData) {
-      // selectedPrefecturesData[prefCode]が存在しない時はundefinedになる気がする。
-      // つまりif(!selectedPrefecturesData[prefCode]?.data)この指定の方が正しい気がする
       if (selectedPrefecturesData[prefCode].data === null) {
         fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
       }
