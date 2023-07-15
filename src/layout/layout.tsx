@@ -4,6 +4,9 @@ import { ReactNode } from 'react';
 type Props = {
   children: ReactNode;
 };
+/* propsを開いてchildrenをもらうなら、以下の方が完結かな！
+*  const Layout = ({ children }: Props) => {}
+*/
 
 const Layout = (props: Props) => {
   const { children } = props;
