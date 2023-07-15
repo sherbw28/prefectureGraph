@@ -13,8 +13,16 @@ import Layout from '@/layout/layout';
 const IndexPage = (): JSX.Element => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [selectedPrefecturesData, setSelectedPrefecturesData] = useState<SelectedPrefectureData>({});
-  const [selectedPopulationCategory, setSelectedPopulationCategory] = useState(0);
+  /**
+   * selectedPrefecturesData -> { prefCode: number, PrefectureData}[]に変換する処理が2回あるから、これ定数でもっといた方がいいかも
+   * const selectedPrefecturesDataList = Object.entries(selectedPrefecturesData).map(([prefCode, prefectureData]) => {
+   *  return { prefCode, prefectureData }
+   * })
+   */
+  
 
+  const [selectedPopulationCategory, setSelectedPopulationCategory] = useState(0);
+  // COLOR_LISTはレンダリングされる必要のない定数だからIndexPageコンポーネント外においた方がいいね
   const COLOR_LIST = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
 
   useEffect(() => {
@@ -37,7 +45,10 @@ const IndexPage = (): JSX.Element => {
       }));
     };
 
+    // このprefCodeは一回の処理内では変化しないからconst定義でいい気がする
     for (let prefCode in selectedPrefecturesData) {
+      // selectedPrefecturesData[prefCode]が存在しない時はundefinedになる気がする。
+      // つまりif(!selectedPrefecturesData[prefCode]?.data)この指定の方が正しい気がする
       if (selectedPrefecturesData[prefCode].data === null) {
         fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
       }
@@ -49,10 +60,15 @@ const IndexPage = (): JSX.Element => {
     if (e.target.checked) {
       setSelectedPrefecturesData((prevData) => ({
         ...prevData,
+        // ここdataにnull入れるなら、data: PopulationDatum[] | nullに変えた方がいいかも
         [prefCode]: { name: prefName, data: null },
       }));
     } else {
       setSelectedPrefecturesData((prevData) => {
+        /* [Knowledge] 一応imutableにこう書ける
+          const {prefCode, ...remains} = prevData
+          return remains
+        */
         const newData = { ...prevData };
         delete newData[prefCode];
         return newData;
@@ -62,6 +78,10 @@ const IndexPage = (): JSX.Element => {
 
   //チャートを表示する
   const generateChartData = () => {
+    /**
+     * [Knowledge]: 組み込み型Record
+     * mergedData: Record<string, YearlyPopulationData>
+     */
     let mergedData: { [year: string]: YearlyPopulationData } = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
@@ -70,6 +90,10 @@ const IndexPage = (): JSX.Element => {
 
       selectedData?.forEach(({ year, value }) => {
         if (!mergedData[year]) {
+          /**
+         * [Knowledge]: keyとvalueの名称が同じ場合は省略できる
+         * mergedData[year] = { year, value: 0 };
+         */
           mergedData[year] = { year: year, value: 0 };
         }
         mergedData[year][name] = value;
