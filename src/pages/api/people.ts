@@ -1,6 +1,8 @@
 // /utils/api/index.ts
 import axios from 'axios';
 
+import { Prefecture, PopulationData } from '../../types/index';
+
 // RESAS API key
 const API_KEY = process.env.NEXT_PUBLIC_RESAS_API_KEY;
 // const API_KEY = "https://opendata.resas-portal.go.jp/api/v1/prefectures";
@@ -17,23 +19,21 @@ const api = axios.create({
 });
 
 // Get prefectures function
-export const getPrefectures = async () => {
+export const getPrefectures = async (): Promise<Prefecture[] | null> => {
   try {
     const response = await api.get('/prefectures');
-    return response.data.result;
+    return (response.data as { result: Prefecture[] }).result;
   } catch (error) {
-    console.error(error);
     return null;
   }
 };
 
 // Get population function
-export const getPopulation = async (prefCode: number) => {
+export const getPopulation = async (prefCode: number): Promise<PopulationData | null> => {
   try {
     const response = await api.get(`/population/composition/perYear?prefCode=${prefCode}&cityCode=-`);
-    return response.data.result;
+    return (response.data as { result: PopulationData }).result;
   } catch (error) {
-    console.error(error);
     return null;
   }
 };

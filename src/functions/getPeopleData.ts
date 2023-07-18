@@ -1,8 +1,10 @@
 import axios from 'axios';
 
+import { Prefecture, PopulationData } from '@/types/index';
+
 const API_KEY = process.env.NEXT_PUBLIC_RESAS_API_KEY;
 
-export const getPopulationData = async (prefCode: number) => {
+export const getPopulationData = async (prefCode: number): Promise<PopulationData> => {
   const response = await axios.get(
     `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?cityCode=-`,
     {
@@ -15,48 +17,15 @@ export const getPopulationData = async (prefCode: number) => {
     },
   );
 
-  return response.data.result;
+  return (response.data as { result: PopulationData }).result;
 };
 
-export const getPrefectures = async () => {
+export const getPrefectures = async (): Promise<Prefecture[]> => {
   const response = await axios.get(`https://opendata.resas-portal.go.jp/api/v1/prefectures`, {
     headers: {
       'X-API-KEY': API_KEY,
     },
   });
 
-  return response.data.result;
-};
-
-export interface Prefecture {
-  prefCode: number;
-  prefName: string;
-}
-
-interface PopulationValueByYear {
-  year: number;
-  value: number;
-}
-
-interface PopulationDatum {
-  label: string;
-  data: PopulationValueByYear[];
-}
-
-export interface PopulationData {
-  boundaryYear: number;
-  data: PopulationDatum[];
-}
-
-export interface PrefectureData {
-  name: string;
-  data: PopulationDatum[];
-}
-
-export interface SelectedPrefectureData {
-  [prefCode: string]: PrefectureData;
-}
-
-export type YearlyPopulationData = {
-  [prefName: string]: number;
+  return (response.data as { result: Prefecture[] }).result;
 };
