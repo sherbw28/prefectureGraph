@@ -10,7 +10,7 @@ export interface PopulationValueByYear {
 
 export interface PopulationDatum {
   label: string;
-  data: PopulationValueByYear[];
+  data: PopulationValueByYear[] | null;
 }
 
 export interface PopulationData {

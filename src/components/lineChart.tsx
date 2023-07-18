@@ -2,6 +2,8 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Label, Legend } 
 
 import { SelectedPrefectureData } from '@/types/index';
 
+const COLOR_LIST = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
+
 type LineChartPopulationProps = {
   selectedPrefecturesData: SelectedPrefectureData;
   //any考え中
@@ -9,7 +11,6 @@ type LineChartPopulationProps = {
 };
 
 const LineChartPopulation: React.FC<LineChartPopulationProps> = ({ selectedPrefecturesData, generateChartData }) => {
-  const COLOR_LIST = ['#FF0000', '#0000FF', '#00FF00', '#000000', '#800080', '#FFFF00'];
 
   return (
     <LineChart

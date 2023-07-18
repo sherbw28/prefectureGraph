@@ -32,7 +32,7 @@ const IndexPage = (): JSX.Element => {
     };
 
     for (const prefCode in selectedPrefecturesData) {
-      if (selectedPrefecturesData[prefCode].data === null) {
+      if (!selectedPrefecturesData[prefCode]?.data) {
         void fetchPopulationData(Number(prefCode), selectedPrefecturesData[prefCode].name);
       }
     }
@@ -47,16 +47,15 @@ const IndexPage = (): JSX.Element => {
       }));
     } else {
       setSelectedPrefecturesData((prevData) => {
-        const newData = { ...prevData };
-        delete newData[prefCode];
-        return newData;
+        const { [prefCode]: _, ...remains } = prevData;
+        return remains;
       });
     }
   };
 
   //チャートを表示する
   const generateChartData = () => {
-    const mergedData: { [year: string]: YearlyPopulationData } = {};
+    const mergedData: Record<string, YearlyPopulationData> = {};
 
     Object.values(selectedPrefecturesData).forEach(({ name, data }) => {
       // 選択されたカテゴリの切り替え
@@ -64,7 +63,7 @@ const IndexPage = (): JSX.Element => {
 
       selectedData?.forEach(({ year, value }) => {
         if (!mergedData[year]) {
-          mergedData[year] = { year: year, value: 0 };
+          mergedData[year] = { year, value: 0 };
         }
         mergedData[year][name] = value;
       });

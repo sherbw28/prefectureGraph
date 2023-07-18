@@ -5,9 +5,10 @@ type Props = {
   children: ReactNode;
 };
 
-const Layout = (props: Props) => {
-  const { children } = props;
+// const Layout = (props: Props) => {
+//   const { children } = props;
 
+const Layout = ({ children }: Props) => {
   return (
     <VStack w="100vw" h="100vh" bg="bg.body" spacing="0px">
       <Heading m={5}>都道府県グラフ</Heading>
